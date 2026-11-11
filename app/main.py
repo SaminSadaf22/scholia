@@ -17,14 +17,18 @@ app = FastAPI(
     version="0.4.0",
 )
 
-public_dir = Path(__file__).resolve().parents[1] / "public"
+static_dir = Path(__file__).resolve().parents[1] / "public" / "static"
+
+# Serve local assets during uvicorn development. On Vercel, public/ is served by the CDN.
+if static_dir.is_dir():
+    app.mount("/static", StaticFiles(directory=static_dir), name="static")
 
 DOCUMENTS: dict[str, str] = {}
 
 
 @app.get("/")
 def index() -> FileResponse:
-    return FileResponse(public_dir / "index.html")
+    return FileResponse(Path(__file__).resolve().parents[1] / "public" / "index.html")
 
 
 @app.get("/health")
@@ -106,9 +110,3 @@ def ask(
         return answer_question(text, question)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
-
-
-# Local development only: serve the public/ assets when not on Vercel.
-# Registered after the API routes so specific routes keep precedence.
-if not os.environ.get("VERCEL") and public_dir.is_dir():
-    app.mount("/", StaticFiles(directory=public_dir, html=True), name="public")

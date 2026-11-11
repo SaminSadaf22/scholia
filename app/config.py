@@ -3,12 +3,12 @@ from pathlib import Path
 BASE_DIR = Path(__file__).resolve().parents[1]
 import os
 
-UPLOAD_DIR = (
-    Path("/tmp") / "scholia" / "uploads"
-    if os.environ.get("VERCEL")
-    else BASE_DIR / "data" / "uploads"
-)
-UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+UPLOAD_DIR = BASE_DIR / "data" / "uploads"
+try:
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+except OSError:
+    UPLOAD_DIR = Path("/tmp") / "scholia" / "uploads"
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 MAX_UPLOAD_MB = 25
 DEFAULT_SUMMARY_SENTENCES = 12
