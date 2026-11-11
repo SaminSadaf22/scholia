@@ -86,14 +86,21 @@ async def summarize(
         "document_id": document_id,
         "filename": filename,
         "character_count": len(cleaned),
+        "text": cleaned,
         **result,
     }
 
 
 @app.post("/api/ask")
-def ask(document_id: str = Form(...), question: str = Form(...)) -> dict:
-    text = DOCUMENTS.get(document_id)
-    if text is None:
+def ask(
+    document_id: str = Form(default=""),
+    question: str = Form(...),
+    text: str = Form(default=""),
+) -> dict:
+    stored = DOCUMENTS.get(document_id) if document_id else None
+    if stored is not None:
+        text = stored
+    if not text:
         raise HTTPException(status_code=404, detail="Document not found. Summarize it first.")
     try:
         return answer_question(text, question)

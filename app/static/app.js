@@ -60,6 +60,7 @@ Extractive summarization offers a practical balance between speed, transparency,
 
 let mode = "upload";
 let documentId = null;
+let documentText = null;
 let currentResult = null;
 let progressTimer = null;
 
@@ -178,6 +179,7 @@ function formatNumber(value) {
 function renderResult(data) {
   currentResult = data;
   documentId = data.document_id;
+  documentText = data.text || null;
 
   resultTitle.textContent = data.filename || "Summary";
   const inferredNote = data.structure_inferred ? " · sections inferred (no headings found)" : "";
@@ -261,6 +263,7 @@ async function submitForm() {
 function resetWorkspace() {
   currentResult = null;
   documentId = null;
+  documentText = null;
   clearFile();
   textarea.value = "";
   updateCharCount();
@@ -389,8 +392,11 @@ async function askQuestion(question) {
   answerEl.innerHTML = `<div class="answer-card"><strong>Searching</strong><p>Looking for the most relevant sentence…</p></div>`;
 
   const payload = new FormData();
-  payload.append("document_id", documentId);
+  payload.append("document_id", documentId || "");
   payload.append("question", trimmed);
+  if (documentText) {
+    payload.append("text", documentText);
+  }
 
   try {
     const response = await fetch("/api/ask", { method: "POST", body: payload });
