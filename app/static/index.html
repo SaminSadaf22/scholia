@@ -1,0 +1,421 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Scholia turns research papers into concise, structured summaries with author, institution, introduction, literature review, methodology, results, and conclusion sections."
+    />
+    <title>Scholia — Research paper summaries, distilled</title>
+    <link
+      rel="icon"
+      href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Crect width='24' height='24' rx='6' fill='%23151516'/%3E%3Cpath d='M7 8.5A2.5 2.5 0 0 1 9.5 6H18v10.5a2.5 2.5 0 0 1-2.5 2.5H7V8.5Z' fill='none' stroke='%23f6efe4' stroke-width='1.6'/%3E%3Cpath d='M9.5 6v10.5A2.5 2.5 0 0 0 12 19' fill='none' stroke='%23f6efe4' stroke-width='1.6'/%3E%3C/svg%3E"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <div class="page-glow" aria-hidden="true"></div>
+
+    <header class="site-header">
+      <a class="brand" href="/">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M5 7.5A3.5 3.5 0 0 1 8.5 4H19v13.5A3.5 3.5 0 0 1 15.5 21H5V7.5Z" stroke="currentColor" stroke-width="1.6" />
+            <path d="M8.5 4v13.5A3.5 3.5 0 0 0 12 21" stroke="currentColor" stroke-width="1.6" />
+            <path d="M10.5 9h5M10.5 12.5h5" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+          </svg>
+        </span>
+        <span class="brand-name">Scholia</span>
+      </a>
+      <nav class="site-nav" aria-label="Primary">
+        <a href="#summarize">Summarizer</a>
+        <a href="#how-it-works">How it works</a>
+      </nav>
+      <span class="privacy-pill">
+        <span class="pulse-dot" aria-hidden="true"></span>
+        Runs locally
+      </span>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-copy">
+          <span class="eyebrow">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+            Structured, faithful summaries
+          </span>
+          <h1>Read less.<br /><em>Understand more.</em></h1>
+          <p class="hero-lede">
+            Drop in a research paper and get the sections that matter — author,
+            institution, introduction, literature review, methodology, results, and
+            conclusion — without losing the facts.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#summarize">
+              Summarize a paper
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </a>
+            <button class="button button-quiet" type="button" id="hero-sample">
+              See a live example
+            </button>
+          </div>
+          <dl class="hero-metrics">
+            <div>
+              <dt>7</dt>
+              <dd>structured sections</dd>
+            </div>
+            <div>
+              <dt>0</dt>
+              <dd>sign-ups needed</dd>
+            </div>
+            <div>
+              <dt>&lt;10s</dt>
+              <dd>typical summary</dd>
+            </div>
+          </dl>
+        </div>
+
+        <div class="hero-visual" aria-hidden="true">
+          <div class="paper-preview">
+            <div class="paper-preview-top">
+              <span class="preview-label">Summary preview</span>
+              <span class="preview-dots"><i></i><i></i><i></i></span>
+            </div>
+            <div class="preview-title-line"></div>
+            <div class="preview-title-line short"></div>
+            <div class="preview-section">
+              <span class="preview-index">01</span>
+              <div>
+                <strong>Introduction</strong>
+                <p>The paper proposes a lightweight approach to paper summarization that preserves factual content.</p>
+              </div>
+            </div>
+            <div class="preview-section">
+              <span class="preview-index">02</span>
+              <div>
+                <strong>Methodology</strong>
+                <p>LexRank and MMR select the most informative, non-redundant lines without a GPU.</p>
+              </div>
+            </div>
+            <div class="preview-section muted-preview">
+              <span class="preview-index">03</span>
+              <div>
+                <strong>Results &amp; discussion</strong>
+                <p>Fast, explainable summaries with strong factual coverage.</p>
+              </div>
+            </div>
+            <div class="preview-footer">
+              <span>Key terms</span>
+              <i>LexRank</i><i>MMR</i><i>extractive</i>
+            </div>
+          </div>
+          <div class="floating-card floating-card-top">
+            <span class="floating-icon">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+            </span>
+            <div><strong>Faithful</strong><span>No invented facts</span></div>
+          </div>
+          <div class="floating-card floating-card-bottom">
+            <span class="floating-icon amber">
+              <svg viewBox="0 0 24 24" fill="none">
+                <path d="M12 3v18M3 12h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+              </svg>
+            </span>
+            <div><strong>Every format</strong><span>PDF, DOCX, PPTX, text</span></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="workspace" id="summarize">
+        <div class="input-card">
+          <div class="input-card-heading">
+            <div>
+              <span class="section-kicker">Start here</span>
+              <h2>What are you reading?</h2>
+            </div>
+            <p>One upload. A complete, section-by-section summary.</p>
+          </div>
+
+          <form id="summarize-form" novalidate>
+            <div class="mode-tabs" role="tablist" aria-label="Input method">
+              <button class="mode-tab is-active" type="button" role="tab" aria-selected="true" data-mode="upload" id="tab-upload">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 16V4m0 0L7 9m5-5 5 5M5 15v3a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Upload a file
+              </button>
+              <button class="mode-tab" type="button" role="tab" aria-selected="false" data-mode="paste" id="tab-paste">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M8 5h8M9 3h6a1 1 0 0 1 1 1v2H8V4a1 1 0 0 1 1-1ZM7 6H6a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-1M8 11h8M8 15h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                Paste text
+              </button>
+            </div>
+
+            <div class="mode-pane is-active" id="pane-upload" role="tabpanel" aria-labelledby="tab-upload">
+              <div class="dropzone" id="dropzone">
+                <input
+                  id="file-input"
+                  type="file"
+                  name="file"
+                  accept=".pdf,.docx,.pptx,.txt,.md,.markdown,.csv,.json,.log,.tsv,.rtf"
+                />
+                <div class="dropzone-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8l-5-5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                    <path d="M14 3v5h5M12 17v-5m0 0-2.5 2.5M12 12l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </div>
+                <div class="dropzone-copy">
+                  <strong id="file-name">Drop your paper here</strong>
+                  <span id="file-hint">or click to browse — PDF, DOCX, PPTX, TXT, MD, RTF</span>
+                </div>
+                <span class="dropzone-limit">Up to 25 MB</span>
+                <button class="file-clear" type="button" id="file-clear" hidden aria-label="Remove selected file">
+                  <svg viewBox="0 0 24 24" fill="none"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+                </button>
+              </div>
+              <div class="format-row" aria-label="Supported formats">
+                <span class="format-chip">PDF</span>
+                <span class="format-chip">DOCX</span>
+                <span class="format-chip">PPTX</span>
+                <span class="format-chip">TXT</span>
+                <span class="format-chip">MD</span>
+                <span class="format-chip">RTF</span>
+                <span class="format-chip">CSV / JSON</span>
+              </div>
+            </div>
+
+            <div class="mode-pane" id="pane-paste" role="tabpanel" aria-labelledby="tab-paste" hidden>
+              <label class="paste-field">
+                <span class="sr-only">Paper text</span>
+                <textarea
+                  name="text"
+                  id="paper-text"
+                  rows="9"
+                  placeholder="Paste the abstract, introduction, or full paper text here. Keep section headings like “Methodology” or “Results” on their own line for the best structure."
+                ></textarea>
+              </label>
+              <div class="paste-meta">
+                <span id="char-count">0 characters</span>
+                <button type="button" class="text-button" id="load-sample">Use a sample paper</button>
+              </div>
+            </div>
+
+            <div class="form-footer">
+              <div class="depth-control">
+                <span class="depth-label">Summary depth</span>
+                <div class="depth-options" role="group" aria-label="Summary depth">
+                  <button type="button" class="depth-option" data-depth="6">Brief</button>
+                  <button type="button" class="depth-option is-active" data-depth="12">Balanced</button>
+                  <button type="button" class="depth-option" data-depth="16">Detailed</button>
+                </div>
+                <input type="range" name="sentences" min="3" max="16" value="12" id="sentence-slider" class="sr-only" />
+              </div>
+              <button class="button button-primary submit-button" type="submit" id="summarize-button">
+                <span class="button-label">Summarize paper</span>
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </button>
+            </div>
+
+            <p class="form-note">
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 3 4 6v5c0 5 3.4 8.5 8 10 4.6-1.5 8-5 8-10V6l-8-3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                <path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              Your document is processed on this machine and is never sent to a third party.
+            </p>
+
+            <div class="error-banner" id="error-banner" role="alert" hidden>
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                <path d="M12 8v5M12 17h.01M10.3 4.2 2.8 17.1A2 2 0 0 0 4.5 20h15a2 2 0 0 0 1.7-2.9L13.7 4.2a2 2 0 0 0-3.4 0Z" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <div>
+                <strong>That didn’t work</strong>
+                <p id="error-text"></p>
+              </div>
+              <button type="button" class="error-close" id="error-close" aria-label="Dismiss error">×</button>
+            </div>
+          </form>
+
+          <div class="progress-panel" id="progress-panel" hidden aria-live="polite">
+            <div class="progress-orb" aria-hidden="true"><span></span></div>
+            <div class="progress-copy">
+              <strong id="progress-title">Reading your paper</strong>
+              <p id="progress-detail">Extracting text and finding section headings…</p>
+            </div>
+            <div class="progress-track" aria-hidden="true"><span id="progress-bar"></span></div>
+            <ol class="progress-steps" id="progress-steps">
+              <li class="is-active">Read</li>
+              <li>Structure</li>
+              <li>Rank</li>
+              <li>Write</li>
+            </ol>
+          </div>
+        </div>
+
+        <section class="empty-state" id="empty-state">
+          <div class="empty-art" aria-hidden="true">
+            <div class="empty-sheet sheet-back"></div>
+            <div class="empty-sheet sheet-front">
+              <span class="sheet-line w-70"></span>
+              <span class="sheet-line w-90"></span>
+              <span class="sheet-line w-60"></span>
+              <span class="sheet-line accent"></span>
+              <span class="sheet-line w-80"></span>
+              <span class="sheet-line w-45"></span>
+            </div>
+            <span class="empty-spark">✦</span>
+          </div>
+          <div>
+            <span class="section-kicker">Your summary</span>
+            <h2>A clear read, section by section.</h2>
+            <p>
+              Upload or paste a paper, then Scholia will surface the author, institution,
+              introduction, literature review, methodology, results and discussion, and
+              conclusion — along with the key terms and a question box for follow-ups.
+            </p>
+            <div class="empty-tags">
+              <span>Author</span>
+              <span>Institution</span>
+              <span>Introduction</span>
+              <span>Literature review</span>
+              <span>Methodology</span>
+              <span>Results &amp; discussion</span>
+              <span>Conclusion</span>
+            </div>
+          </div>
+        </section>
+
+        <section class="result-panel" id="result" hidden>
+          <div class="result-topbar">
+            <div class="result-heading">
+              <span class="section-kicker">Summary ready</span>
+              <h2 id="result-title">Your paper</h2>
+              <p class="result-meta" id="result-meta"></p>
+            </div>
+            <div class="result-actions">
+              <button class="icon-button" type="button" id="copy-button">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <rect x="9" y="9" width="11" height="11" rx="2" stroke="currentColor" stroke-width="1.6" />
+                  <path d="M15 9V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v7a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                </svg>
+                <span>Copy</span>
+              </button>
+              <button class="icon-button" type="button" id="download-button">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M12 4v11m0 0 4-4m-4 4-4-4M5 19h14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>Download</span>
+              </button>
+              <button class="icon-button" type="button" id="new-button">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M4 12a8 8 0 1 0 2.3-5.7M4 4v5h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span>New paper</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="result-overview">
+            <div class="keywords-block">
+              <span class="overview-label">Key terms</span>
+              <div class="keywords" id="keywords"></div>
+            </div>
+            <div class="result-stats">
+              <div><strong id="stat-sentences">—</strong><span>sentences kept</span></div>
+              <div><strong id="stat-reduction">—</strong><span>shorter</span></div>
+              <div><strong id="stat-read">—</strong><span>min read</span></div>
+            </div>
+          </div>
+
+          <div class="sections" id="sections"></div>
+
+          <details class="combined">
+            <summary>
+              <span>Full combined summary</span>
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 9 6 6 6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" /></svg>
+            </summary>
+            <p id="summary"></p>
+          </details>
+
+          <section class="ask-card">
+            <div class="ask-heading">
+              <span class="ask-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none"><path d="M8 10h8M8 14h5M21 12a9 9 0 1 1-3.3-7M21 4v5h-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+              </span>
+              <div>
+                <h3>Ask the paper a question</h3>
+                <p>Get an answer grounded in the document’s own sentences.</p>
+              </div>
+            </div>
+            <form id="ask-form">
+              <div class="ask-row">
+                <input type="text" name="question" placeholder="What method does the paper propose?" required />
+                <button class="button button-primary ask-button" type="submit">Ask</button>
+              </div>
+            </form>
+            <div class="suggested-questions" id="suggested-questions">
+              <button type="button">What method was used?</button>
+              <button type="button">What are the key findings?</button>
+              <button type="button">What are the limitations?</button>
+            </div>
+            <div id="answer" class="answer" aria-live="polite"></div>
+          </section>
+        </section>
+      </section>
+
+      <section class="how-it-works" id="how-it-works">
+        <div class="how-heading">
+          <span class="section-kicker">How it works</span>
+          <h2>Built for the way research actually reads.</h2>
+        </div>
+        <div class="how-grid">
+          <article>
+            <span class="how-number">01</span>
+            <h3>Bring the whole paper</h3>
+            <p>PDFs, Word documents, slides, and plain text are all read the same way — no format switching, no extra steps.</p>
+          </article>
+          <article>
+            <span class="how-number">02</span>
+            <h3>Keep the structure</h3>
+            <p>Headings are detected and mapped to the sections researchers expect, so the summary follows the paper’s own logic.</p>
+          </article>
+          <article>
+            <span class="how-number">03</span>
+            <h3>Stay grounded</h3>
+            <p>Every line is selected from the source. No invented claims, no paraphrase drift, and no GPU required.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <a class="brand small" href="/">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 7.5A3.5 3.5 0 0 1 8.5 4H19v13.5A3.5 3.5 0 0 1 15.5 21H5V7.5Z" stroke="currentColor" stroke-width="1.6" /><path d="M8.5 4v13.5A3.5 3.5 0 0 0 12 21" stroke="currentColor" stroke-width="1.6" /></svg>
+        </span>
+        <span class="brand-name">Scholia</span>
+      </a>
+      <p>Research summaries that keep the facts in view.</p>
+      <span>Built with FastAPI + LexRank · Runs locally</span>
+    </footer>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
