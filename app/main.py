@@ -1,3 +1,4 @@
+import os
 import uuid
 from pathlib import Path
 
@@ -16,15 +17,14 @@ app = FastAPI(
     version="0.4.0",
 )
 
-static_dir = Path(__file__).resolve().parent / "static"
-app.mount("/static", StaticFiles(directory=static_dir), name="static")
+public_dir = Path(__file__).resolve().parents[1] / "public"
 
 DOCUMENTS: dict[str, str] = {}
 
 
 @app.get("/")
 def index() -> FileResponse:
-    return FileResponse(static_dir / "index.html")
+    return FileResponse(public_dir / "index.html")
 
 
 @app.get("/health")
@@ -106,3 +106,9 @@ def ask(
         return answer_question(text, question)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+# Local development only: serve the public/ assets when not on Vercel.
+# Registered after the API routes so specific routes keep precedence.
+if not os.environ.get("VERCEL") and public_dir.is_dir():
+    app.mount("/", StaticFiles(directory=public_dir, html=True), name="public")
