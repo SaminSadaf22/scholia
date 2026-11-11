@@ -83,6 +83,8 @@ async def summarize(
         result = summarize_text(cleaned, sentences)
     except ValueError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        raise HTTPException(status_code=500, detail=f"Summarization failed: {type(exc).__name__}: {exc}") from exc
 
     document_id = str(uuid.uuid4())
     DOCUMENTS[document_id] = cleaned
